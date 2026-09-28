@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# webdev-client
 
-## Getting Started
+Harsh Dalal — Web Development course work.
 
-First, run the development server:
+This is the Next.js app I build through the course. Chapter 1 covers plain HTML
+in React components, so Tailwind is imported but commented out in
+`app/layout.tsx` and the pages render with the browser's default styling. CSS
+comes in Chapter 2.
+
+Deployed at https://webdev-client-tau-nine.vercel.app
+
+## What is in here
+
+**Labs** — `/labs`
+
+- `/labs/lab1` is the HTML work: headings and spans, paragraphs, ordered and
+  unordered lists, tables, images, the form controls (text fields, textarea,
+  radio buttons, checkboxes, dropdowns, typed inputs, buttons), a Student
+  Profile form, props with `HighlightedParagraph`, children with
+  `HighlightedBox`, and anchor tags.
+- `/labs/lab2` through `/labs/lab5` are placeholders for later chapters.
+- `app/labs/TOC.tsx` and `app/labs/layout.tsx` put the table of contents
+  beside every lab page through `children`.
+
+**Kambaz** — a rough prototype of a learning management system
+
+- `/account/signin`, `/account/signup`, `/account/profile` with an account
+  navigation sidebar. `/` and `/account` both redirect to sign in.
+- `/dashboard` lists three courses with a `CourseCard` component.
+- `/courses/[cid]/home` puts the modules list next to Course Status.
+- `/courses/[cid]/modules` nests weeks, lessons and content items.
+- `/courses/[cid]/assignments` and `/courses/[cid]/assignments/[aid]` for the
+  assignment list and the assignment editor.
+- Piazza, Zoom, Quizzes, Grades and People are heading-only placeholders.
+- `app/not-found.tsx` handles Calendar and Inbox, which do not exist yet.
+
+Everything under `app/(kambaz)` is a route group, so the parentheses do not
+show up in the URL.
+
+## Running it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Then open http://localhost:3000.
