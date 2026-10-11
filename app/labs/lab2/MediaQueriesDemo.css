@@ -16,7 +16,7 @@
   text-decoration: underline;
 }
 
-/* Sample breakpoint: below 750px is white text on purple */
+/* sample breakpoint: below 750px is purple */
 @media (max-width: 749px) {
   .wd-media-queries-demo {
     background-color: purple;
@@ -86,8 +86,7 @@
   }
 }
 
-/* My breakpoint: 1500px and up is white text on black.
-   It comes last so it wins over the 1250px rule above. */
+/* my breakpoint: 1500px and up is black */
 @media (min-width: 1500px) {
   .wd-media-queries-demo {
     background-color: black;

@@ -3,7 +3,7 @@
   color: white;
 } */
 
-/* My rule: every h3 inside Lab 2 */
+/* my h3 rule */
 #wd-lab2 h3 {
   background-color: #eef0ff;
   color: #7070ff;
@@ -72,9 +72,7 @@ p#wd-ai-id-selector {
   color: white;
 }
 
-/* My cascade experiment. All three rules set background-color on the same
-   paragraph. The tag rule is the weakest, the class rule beats it, and the
-   id rule beats both, so the paragraph ends up light green. */
+/* my cascade test: tag, class and id all set the background, id should win */
 #wd-css-cascade p {
   background-color: lightblue;
 }
@@ -87,7 +85,7 @@ p#wd-ai-id-selector {
   background-color: lightgreen;
 }
 
-/* Sample cascade: tag green, class yellow, id red. The id rule should win. */
+/* sample cascade: tag green, class yellow, id red. id should win */
 #wd-ai-cascade-demo p {
   background-color: green;
 }

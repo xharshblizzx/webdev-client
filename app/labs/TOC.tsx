@@ -33,7 +33,7 @@ export default function TOC() {
           Chapter 1
         </a>
       </li>
-      <li>Harsh Dalal — break it, then build it back better.</li>
+      <li>Harsh Dalal - break it, then build it back better.</li>
     </ul>
   );
 }
