@@ -23,8 +23,11 @@ export default function HeadingTags() {
         <h6>h6</h6>
         <div id="wd-ai-headings">
           <h4>Lab notes</h4>
+          <p>These are short notes about the work done in this lab.</p>
           <h5>What I built</h5>
+          <p>A page that shows each HTML tag covered in the chapter.</p>
           <h6>Next step</h6>
+          <p>Style these pages with CSS in the next chapter.</p>
         </div>
       </div>
       <div id="wd-your-heading">
