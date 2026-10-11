@@ -2,10 +2,10 @@
 
 Harsh Dalal — Web Development course work.
 
-This is the Next.js app I build through the course. Chapter 1 covers plain HTML
-in React components, so Tailwind is imported but commented out in
-`app/layout.tsx` and the pages render with the browser's default styling. CSS
-comes in Chapter 2.
+This is the Next.js app I build through the course. Chapter 1 covered plain HTML
+in React components. Chapter 2 adds CSS, React Icons, and Tailwind. Tailwind is
+still not loaded globally: the global import in `app/layout.tsx` stays commented
+out, and only the pages that need it import it (the Tailwind lab and Kambaz).
 
 Deployed at https://webdev-client-tau-nine.vercel.app
 
@@ -18,7 +18,14 @@ Deployed at https://webdev-client-tau-nine.vercel.app
   radio buttons, checkboxes, dropdowns, typed inputs, buttons), a Student
   Profile form, props with `HighlightedParagraph`, children with
   `HighlightedBox`, and anchor tags.
-- `/labs/lab2` through `/labs/lab5` are placeholders for later chapters.
+- `/labs/lab2` is the CSS work: the style attribute, id, class and structure
+  selectors, the cascade, colors, borders, padding, margins, the box model,
+  corners, dimensions, display, positions, z-index, float, a float grid, flex,
+  media queries, and a React Icons sampler.
+- `/labs/lab2/tailwind` is a separate page for the Tailwind samples: spacing,
+  typography, background colors, responsive prefixes, a responsive card,
+  filters, and grids.
+- `/labs/lab3` through `/labs/lab5` are placeholders for later chapters.
 - `app/labs/TOC.tsx` and `app/labs/layout.tsx` put the table of contents
   beside every lab page through `children`.
 
@@ -26,12 +33,13 @@ Deployed at https://webdev-client-tau-nine.vercel.app
 
 - `/account/signin`, `/account/signup`, `/account/profile` with an account
   navigation sidebar. `/` and `/account` both redirect to sign in.
-- `/dashboard` lists three courses with a `CourseCard` component.
+- `/dashboard` shows the courses as `CourseCard`s in a responsive grid.
 - `/courses/[cid]/home` puts the modules list next to Course Status.
 - `/courses/[cid]/modules` nests weeks, lessons and content items.
 - `/courses/[cid]/assignments` and `/courses/[cid]/assignments/[aid]` for the
   assignment list and the assignment editor.
-- Piazza, Zoom, Quizzes, Grades and People are heading-only placeholders.
+- `/courses/[cid]/people/table` is the People roster table.
+- Piazza, Zoom, Quizzes and Grades are heading-only placeholders.
 - `app/not-found.tsx` handles Calendar and Inbox, which do not exist yet.
 
 Everything under `app/(kambaz)` is a route group, so the parentheses do not
