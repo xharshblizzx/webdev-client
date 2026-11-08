@@ -1,16 +1,19 @@
+"use client";
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
-import * as db from "../../../database";
+import { useAssignmentsStore } from "../../../store/assignmentsStore";
 
-export default async function Assignments({
-  params,
-}: {
-  params: Promise<{ cid: string }>;
-}) {
-  const { cid } = await params;
-  const assignments = db.assignments.filter(
-    (assignment) => assignment.course === cid,
+export default function Assignments() {
+  const { cid } = useParams();
+  const courseId = String(cid);
+  const router = useRouter();
+  const assignments = useAssignmentsStore((state) => state.assignments).filter(
+    (assignment) => assignment.course === courseId,
   );
+  const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
+  const [toDelete, setToDelete] = useState<string | null>(null);
   return (
     <div id="wd-assignments">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -33,6 +36,7 @@ export default async function Assignments({
           <button
             id="wd-add-assignment"
             type="button"
+            onClick={() => router.push(`/courses/${courseId}/assignments/new`)}
             className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
           >
             <FaPlus /> Assignment
@@ -55,13 +59,45 @@ export default async function Assignments({
         {assignments.map((assignment) => (
           <AssignmentItem
             key={assignment._id}
-            cid={cid}
+            cid={courseId}
             aid={assignment._id}
             title={assignment.title}
             details={`Multiple Modules | Not available until ${assignment.available} | Due ${assignment.due} | ${assignment.points} pts`}
+            onDelete={() => setToDelete(assignment._id)}
           />
         ))}
       </ul>
+      {toDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          id="wd-delete-assignment-dialog"
+        >
+          <div className="w-full max-w-sm rounded-lg bg-white p-4 shadow-lg">
+            <p className="mb-4">Are you sure you want to remove this assignment?</p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                id="wd-delete-assignment-cancel"
+                className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+                onClick={() => setToDelete(null)}
+              >
+                No
+              </button>
+              <button
+                type="button"
+                id="wd-delete-assignment-confirm"
+                className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+                onClick={() => {
+                  deleteAssignment(toDelete);
+                  setToDelete(null);
+                }}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
