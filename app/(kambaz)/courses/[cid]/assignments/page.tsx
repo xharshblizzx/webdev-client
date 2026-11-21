@@ -1,18 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
+import * as client from "../../client";
 import { useAssignmentsStore } from "../../../store/assignmentsStore";
 
 export default function Assignments() {
   const { cid } = useParams();
   const courseId = String(cid);
   const router = useRouter();
-  const assignments = useAssignmentsStore((state) => state.assignments).filter(
-    (assignment) => assignment.course === courseId,
-  );
+  const assignments = useAssignmentsStore((state) => state.assignments);
+  const setAssignments = useAssignmentsStore((state) => state.setAssignments);
   const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
+  useEffect(() => {
+    const load = async () => {
+      setAssignments(await client.findAssignmentsForCourse(courseId));
+    };
+    load();
+  }, [courseId, setAssignments]);
+  const onDeleteAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    deleteAssignment(assignmentId);
+  };
   const [toDelete, setToDelete] = useState<string | null>(null);
   return (
     <div id="wd-assignments">
@@ -88,7 +98,7 @@ export default function Assignments() {
                 id="wd-delete-assignment-confirm"
                 className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
                 onClick={() => {
-                  deleteAssignment(toDelete);
+                  onDeleteAssignment(toDelete);
                   setToDelete(null);
                 }}
               >

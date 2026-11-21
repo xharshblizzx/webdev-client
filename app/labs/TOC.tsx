@@ -10,6 +10,8 @@ const LINKS = [
   { href: "/labs/lab4", id: "wd-lab4-toc-link", label: "Lab 4", match: (p: string) => p.includes("/lab4") },
   { href: "/labs/lab5", id: "wd-lab5-toc-link", label: "Lab 5", match: (p: string) => p.includes("/lab5") },
   { href: "/", id: "wd-kambaz-link", label: "Kambaz", match: () => false },
+  { href: "https://github.com/xharshblizzx/webdev-server", id: "wd-toc-server-github", label: "Server Repo", match: () => false },
+  { href: process.env.NEXT_PUBLIC_HTTP_SERVER ?? "", id: "wd-toc-server-url", label: "Server", match: () => false },
   { href: "https://kambaz.dev/book/ch1", id: "wd-toc-book-link", label: "Chapter 1", match: () => false },
   { href: "https://kambaz.dev/book/ch3", id: "wd-book-ch3-link", label: "Book Ch3", match: () => false },
 ] as const;

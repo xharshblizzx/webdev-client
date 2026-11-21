@@ -4,8 +4,8 @@ import { useParams, useRouter } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa6";
 import CourseNavigation from "./Navigation";
 import Breadcrumb from "./Breadcrumb";
-import { useCoursesStore } from "../../store/coursesStore";
-import { useEnrollmentsStore } from "../../store/enrollmentsStore";
+import * as client from "../client";
+import type { Course } from "../../store/coursesStore";
 import { useAccountContext } from "../../account/AccountContext";
 
 export default function CoursesLayout({
@@ -15,21 +15,24 @@ export default function CoursesLayout({
 }>) {
   const { cid } = useParams();
   const courseId = typeof cid === "string" ? cid : "";
-  const courses = useCoursesStore((state) => state.courses);
-  const course = courses.find((c) => c._id === courseId);
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
   const { currentUser } = useAccountContext();
   const router = useRouter();
+  const [course, setCourse] = useState<Course | undefined>(undefined);
   const [showCourseNav, setShowCourseNav] = useState(true);
-  const enrolled =
-    !currentUser ||
-    enrollments.some(
-      (e) => e.user === currentUser._id && e.course === courseId,
-    );
   useEffect(() => {
-    if (!enrolled) router.push("/dashboard");
-  }, [enrolled, router]);
-  if (!enrolled) return null;
+    const load = async () => {
+      if (currentUser) {
+        const mine: Course[] = await client.findMyCourses();
+        if (!mine.some((c) => c._id === courseId)) {
+          router.push("/dashboard");
+          return;
+        }
+      }
+      const courses: Course[] = await client.fetchAllCourses();
+      setCourse(courses.find((c) => c._id === courseId));
+    };
+    load();
+  }, [courseId, currentUser, router]);
   return (
     <div id="wd-courses">
       <h2 className="text-2xl font-semibold text-red-600">

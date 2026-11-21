@@ -1,22 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useCoursesStore, type Course } from "../store/coursesStore";
-import { useEnrollmentsStore } from "../store/enrollmentsStore";
-import { useAccountContext } from "../account/AccountContext";
+import type { Course } from "../store/coursesStore";
 
 export default function CourseCard({
   course,
   enrolled,
+  showEnroll,
   onEdit,
+  onDelete,
+  onToggleEnrollment,
 }: {
   course: Course;
   enrolled: boolean;
+  showEnroll: boolean;
   onEdit: () => void;
+  onDelete: () => void;
+  onToggleEnrollment: () => void;
 }) {
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
-  const enroll = useEnrollmentsStore((state) => state.enroll);
-  const unenroll = useEnrollmentsStore((state) => state.unenroll);
-  const { currentUser } = useAccountContext();
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
@@ -60,12 +60,12 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              deleteCourse(course._id);
+              onDelete();
             }}
           >
             Delete
           </button>
-          {currentUser && (
+          {showEnroll && (
             <button
               type="button"
               className={`mt-2 block rounded px-3 py-1.5 text-sm font-medium text-white ${
@@ -73,11 +73,7 @@ export default function CourseCard({
               }`}
               onClick={(event) => {
                 event.preventDefault();
-                if (enrolled) {
-                  unenroll(currentUser._id, course._id);
-                } else {
-                  enroll(currentUser._id, course._id);
-                }
+                onToggleEnrollment();
               }}
             >
               {enrolled ? "Unenroll" : "Enroll"}

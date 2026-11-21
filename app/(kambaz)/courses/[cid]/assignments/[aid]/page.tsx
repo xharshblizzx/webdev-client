@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import * as client from "../../../client";
 import {
   emptyAssignment,
   useAssignmentsStore,
@@ -20,11 +21,22 @@ export default function AssignmentEditor() {
   const [assignment, setAssignment] = useState<Assignment>(
     findAssignment(assignmentId) ?? { ...emptyAssignment, course: courseId },
   );
-  const save = () => {
+  useEffect(() => {
+    if (isNew || findAssignment(assignmentId)) return;
+    const load = async () => {
+      const assignments: Assignment[] = await client.findAssignmentsForCourse(courseId);
+      const found = assignments.find((a) => a._id === assignmentId);
+      if (found) setAssignment(found);
+    };
+    load();
+  }, [assignmentId, courseId, findAssignment, isNew]);
+  const save = async () => {
     if (isNew) {
-      addAssignment({ ...assignment, course: courseId });
+      const created = await client.createAssignmentForCourse(courseId, assignment);
+      addAssignment(created);
     } else {
-      updateAssignment(assignment);
+      const saved = await client.updateAssignment(assignment);
+      updateAssignment(saved);
     }
     router.push(`/courses/${courseId}/assignments`);
   };

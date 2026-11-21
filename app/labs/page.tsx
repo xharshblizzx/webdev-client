@@ -8,6 +8,14 @@ export default function Labs() {
       <a href="https://github.com/xharshblizzx/webdev-client" id="wd-github">
         My GitHub repository
       </a>
+      <br />
+      <a href="https://github.com/xharshblizzx/webdev-server" id="wd-server-github">
+        My Node server repository
+      </a>
+      <br />
+      <a href={process.env.NEXT_PUBLIC_HTTP_SERVER} id="wd-server-url">
+        My Node server
+      </a>
       <ul>
         <li>
           <Link href="/labs/lab1">Lab 1: HTML Examples</Link>

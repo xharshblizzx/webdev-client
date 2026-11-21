@@ -14,19 +14,18 @@ export const emptyAssignment: Assignment = {
 };
 type AssignmentsStore = {
   assignments: Assignment[];
+  setAssignments: (assignments: Assignment[]) => void;
   addAssignment: (assignment: Assignment) => void;
   updateAssignment: (assignment: Assignment) => void;
   deleteAssignment: (assignmentId: string) => void;
   findAssignment: (assignmentId: string) => Assignment | undefined;
 };
 export const useAssignmentsStore = create<AssignmentsStore>((set, get) => ({
-  assignments: assignmentsJson,
+  assignments: [],
+  setAssignments: (assignments) => set({ assignments }),
   addAssignment: (assignment) =>
     set((state) => ({
-      assignments: [
-        ...state.assignments,
-        { ...assignment, _id: crypto.randomUUID() },
-      ],
+      assignments: [...state.assignments, assignment],
     })),
   updateAssignment: (assignment) =>
     set((state) => ({

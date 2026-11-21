@@ -1,30 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
-import * as db from "../../../../database";
 import { emptyUser, type User } from "../../../../account/AccountContext";
-import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
+import * as client from "../../../client";
+import * as accountClient from "../../../../account/client";
 
 export default function PeopleTable() {
   const { cid } = useParams();
   const courseId = String(cid);
-  const [users, setUsers] = useState<User[]>(db.users);
+  const [enrolled, setEnrolled] = useState<User[]>([]);
   const [user, setUser] = useState<User>(emptyUser);
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  const enroll = useEnrollmentsStore((state) => state.enroll);
-  const unenroll = useEnrollmentsStore((state) => state.unenroll);
-  const enrolled = users.filter((usr) =>
-    enrollments.some(
-      (enrollment) => enrollment.user === usr._id && enrollment.course === courseId,
-    ),
-  );
-  const addPerson = () => {
+  const loadPeople = async () => {
+    setEnrolled(await client.findUsersForCourse(courseId));
+  };
+  useEffect(() => {
+    loadPeople();
+  }, [courseId]);
+  const addPerson = async () => {
     if (!user.firstName || !user.lastName) return;
-    const newUser = { ...user, _id: crypto.randomUUID() };
-    setUsers([...users, newUser]);
-    enroll(newUser._id, courseId);
+    const newUser = await accountClient.createUser({
+      ...user,
+      username: `${user.firstName}.${user.lastName}`.toLowerCase(),
+    });
+    await client.enrollIntoCourse(newUser._id, courseId);
     setUser(emptyUser);
+    await loadPeople();
+  };
+  const removePerson = async (userId: string) => {
+    await client.unenrollFromCourse(userId, courseId);
+    await loadPeople();
   };
   return (
     <div id="wd-people-table" className="overflow-x-auto">
@@ -90,7 +95,7 @@ export default function PeopleTable() {
               <td className="p-2">
                 <button
                   type="button"
-                  onClick={() => unenroll(user._id, courseId)}
+                  onClick={() => removePerson(user._id)}
                   className="rounded bg-red-600 px-2 py-0.5 text-xs text-white"
                 >
                   Remove
